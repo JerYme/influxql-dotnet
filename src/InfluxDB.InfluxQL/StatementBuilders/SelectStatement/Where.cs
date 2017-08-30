@@ -19,7 +19,7 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
             this.where = new WhereClause(predicate);
         }
 
-        public SingleSeriesSelectStatement<TValues> SelectStatement => new SingleSeriesSelectStatement<TValues>(select, from, where);
+        public SingleSeriesSelectStatement<TValues> Statement => new SingleSeriesSelectStatement<TValues>(select, from, where);
 
         public GroupBy<TValues> GroupBy(TimeSpan timeInterval)
         {
@@ -28,12 +28,12 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
 
         public override string ToString()
         {
-            return SelectStatement.ToString();
+            return Statement.ToString();
         }
 
         public static implicit operator SingleSeriesSelectStatement<TValues>(Where<TValues> builder)
         {
-            return builder.SelectStatement;
+            return builder.Statement;
         }
     }
 
@@ -52,7 +52,7 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
             this.where = new WhereClause(predicate);
         }
 
-        public SingleSeriesSelectStatement<TValues> SelectStatement => new SingleSeriesSelectStatement<TValues>(select, from, where);
+        public SingleSeriesSelectStatement<TValues> Statement => new SingleSeriesSelectStatement<TValues>(select, from, where);
 
         public GroupBy<TValues> GroupBy(TimeSpan timeInterval)
         {
@@ -71,12 +71,12 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
 
         public override string ToString()
         {
-            return SelectStatement.ToString();
+            return Statement.ToString();
         }
 
         public static implicit operator SingleSeriesSelectStatement<TValues>(Where<TValues, TTags> builder)
         {
-            return builder.SelectStatement;
+            return builder.Statement;
         }
     }
 }

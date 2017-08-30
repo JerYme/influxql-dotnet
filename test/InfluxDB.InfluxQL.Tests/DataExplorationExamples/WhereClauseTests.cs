@@ -14,7 +14,7 @@ namespace InfluxDB.InfluxQL.Tests.DataExplorationExamples
                 .Select((fields, tags) => new { fields.water_level, fields.level_description, tags.location })
                 .Where("water_level > 8");
 
-            query.SelectStatement.Text.ShouldBe("SELECT water_level, \"level description\" AS level_description, location FROM h2o_feet WHERE water_level > 8");
+            query.Statement.Text.ShouldBe("SELECT water_level, \"level description\" AS level_description, location FROM h2o_feet WHERE water_level > 8");
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace InfluxDB.InfluxQL.Tests.DataExplorationExamples
                 .Select((fields, tags) => new { fields.water_level, fields.level_description, tags.location })
                 .Where("\"level description\" = 'below 3 feet'");
 
-            query.SelectStatement.Text.ShouldBe("SELECT water_level, \"level description\" AS level_description, location FROM h2o_feet WHERE \"level description\" = 'below 3 feet'");
+            query.Statement.Text.ShouldBe("SELECT water_level, \"level description\" AS level_description, location FROM h2o_feet WHERE \"level description\" = 'below 3 feet'");
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace InfluxDB.InfluxQL.Tests.DataExplorationExamples
                 .Select((fields, tags) => new { fields.water_level, fields.level_description, tags.location })
                 .Where("water_level + 2 > 11.9");
 
-            query.SelectStatement.Text.ShouldBe("SELECT water_level, \"level description\" AS level_description, location FROM h2o_feet WHERE water_level + 2 > 11.9");
+            query.Statement.Text.ShouldBe("SELECT water_level, \"level description\" AS level_description, location FROM h2o_feet WHERE water_level + 2 > 11.9");
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace InfluxDB.InfluxQL.Tests.DataExplorationExamples
                 .Select(fields => new { fields.water_level })
                 .Where("location = 'santa_monica'");
 
-            query.SelectStatement.Text.ShouldBe("SELECT water_level FROM h2o_feet WHERE location = 'santa_monica'");
+            query.Statement.Text.ShouldBe("SELECT water_level FROM h2o_feet WHERE location = 'santa_monica'");
         }
 
         [Fact]

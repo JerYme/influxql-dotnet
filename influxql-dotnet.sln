@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{75C71D21-E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfluxDB.InfluxQL", "src\InfluxDB.InfluxQL\InfluxDB.InfluxQL.csproj", "{3BB22BD1-9B6B-4764-8D2E-33CE46C16195}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfluxDB.InfluxQL.Tests", "test\InfluxDB.InfluxQL.Tests\InfluxDB.InfluxQL.Tests.csproj", "{A078C932-5586-4E37-86D6-56B68382696B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfluxDB.InfluxQL.Tests", "test\InfluxDB.InfluxQL.Tests\InfluxDB.InfluxQL.Tests.csproj", "{A078C932-5586-4E37-86D6-56B68382696B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,17 +8,28 @@ namespace InfluxDB.InfluxQL.Tests.DataExplorationExamples.NoaaSampleData
         {
         }
 
-        public sealed class Tags
+        public struct Tags
         {
+            public Tags(string location)
+            {
+                this.location = location;
+            }
+
             public string location { get; }
         }
 
-        public sealed class Fields
+        public struct Fields
         {
-            [InfluxKeyName("level description")]
-            public string level_description { get; set; }
+            public Fields(string levelDescription, double waterLevel)
+            {
+                level_description = levelDescription;
+                water_level = waterLevel;
+            }
 
-            public double water_level { get; set; }
+            [InfluxKeyName("level description")]
+            public string level_description { get; }
+
+            public double water_level { get; }
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 
 namespace InfluxDB.InfluxQL.Schema
 {
@@ -19,7 +20,7 @@ namespace InfluxDB.InfluxQL.Schema
 
         protected static IEnumerable<MeasurementField> GetInfluxFields(Type fieldsType)
         {
-            return fieldsType.GetProperties().Select(p =>
+            return fieldsType.GetTypeInfo().GetProperties().Select(p =>
             {
                 var influxFieldName = p.Name;
                 var att = p.GetCustomAttributes(typeof(InfluxKeyNameAttribute), false).SingleOrDefault();

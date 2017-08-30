@@ -5,9 +5,15 @@ namespace InfluxDB.InfluxQL.Client
 {
     public static class SeriesCollectionExtensions
     {
-        public static IList<(TGroupBy tags, TValues values, DateTime time)> Flatten<TValues, TGroupBy>(this IList<Series<TValues, TGroupBy>> series)
+        public static IEnumerable<(DateTime time, TValues values, TGroupBy tags)> Flatten<TValues, TGroupBy>(this IList<Series<TValues, TGroupBy>> series)
         {
-            return null;
+            foreach (var serie in series)
+            {
+                foreach (var point in serie.Points)
+                {
+                    yield return (point.time, point.values, serie.Tags);
+                }
+            }
         }
     }
 }
