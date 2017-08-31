@@ -12,11 +12,12 @@ namespace InfluxDB.InfluxQL.Tests.TestUtilities
     {
         public override IEnumerable<object[]> GetData(MethodInfo testMethod)
         {
-            var integrationName = new InfluxIntegrationName(testMethod.Name);
-
             yield return new object[] { new MockConfig(testMethod.Name) };
-
+#if DEBUG
+            // TODO: Categorise these tests as integration tests so they can be run seperatly on build server.
+            var integrationName = new InfluxIntegrationName(testMethod.Name);
             yield return new object[] { new IntegrationConfig("http://localhost:8086", testMethod.Name, integrationName.SourcePath) };
+#endif
         }
     }
 
