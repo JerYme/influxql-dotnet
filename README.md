@@ -1,4 +1,4 @@
-﻿# InfluxQL.net
+﻿# InfluxQL.net [![Build status](https://ci.appveyor.com/api/projects/status/krvvi1yjk6ci6aje/branch/master?svg=true)](https://ci.appveyor.com/project/gambrose/influxql-dotnet/branch/master) [![NuGet Version](http://img.shields.io/nuget/v/InfluxQL.net.svg?style=flat)](https://www.nuget.org/packages/InfluxQL.net/)
 
 A C# client for querying data from [InfluxDB](https://www.influxdata.com/) in a type safe way.
 

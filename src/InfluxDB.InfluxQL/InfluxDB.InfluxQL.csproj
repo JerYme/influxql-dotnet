@@ -1,9 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Description>A .NET library for querying InfluxDB in a type safe way</Description>
     <TargetFrameworks>net452;netstandard1.5</TargetFrameworks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AssemblyName>InfluxDB.InfluxQL</AssemblyName>
+    <PackageId>InfluxQL.net</PackageId>
+    <Version>$(APPVEYOR_BUILD_VERSION)</Version>
+    <PackageTags>influxdb</PackageTags>
+    <PackageProjectUrl>https://github.com/gambrose/influxql-dotnet</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/gambrose/influxql-dotnet/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>

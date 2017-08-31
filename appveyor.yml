@@ -1,7 +1,16 @@
-version: 0.1.{build}
+version: 0.1.10-alpha+{build}
 pull_requests:
   do_not_increment_build_number: true
 image: Visual Studio 2017
 configuration: Release
 before_build:
 - ps: nuget restore
+build:
+  publish_nuget: true
+  publish_nuget_symbols: true
+deploy:
+- provider: NuGet
+  api_key:
+    secure: Kg7K8pNYUx/guiTXMOW6FkRH/1t6mD+rGW558cmuGPL2JMuSQ8B2U1kJUhuIuyUQ
+  on:
+    branch: master
