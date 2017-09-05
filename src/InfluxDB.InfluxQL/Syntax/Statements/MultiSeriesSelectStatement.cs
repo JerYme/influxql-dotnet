@@ -9,12 +9,25 @@ namespace InfluxDB.InfluxQL.Syntax.Statements
 {
     public class MultiSeriesSelectStatement<TValues, TTags>
     {
-        public MultiSeriesSelectStatement(SelectClause select, FromClause from, WhereClause where = null, GroupByClause groupBy = null)
+        public MultiSeriesSelectStatement(
+            SelectClause select,
+            FromClause from,
+            WhereClause where = null,
+            GroupByClause groupBy = null,
+            LimitClause limit = null,
+            OffsetClause offset = null,
+            SLimitClause slimit = null,
+            SOffsetClause soffset = null
+        )
         {
             Select = select ?? throw new ArgumentNullException(nameof(select));
             From = from ?? throw new ArgumentNullException(nameof(from));
             Where = where;
             GroupBy = groupBy;
+            Limit = limit;
+            Offset = offset;
+            SLimit = slimit;
+            SOffset = soffset;
         }
 
         public SelectClause Select { get; }
@@ -24,6 +37,14 @@ namespace InfluxDB.InfluxQL.Syntax.Statements
         public WhereClause Where { get; }
 
         public GroupByClause GroupBy { get; }
+
+        public LimitClause Limit { get; }
+
+        public OffsetClause Offset { get; }
+
+        public SLimitClause SLimit { get; }
+
+        public SOffsetClause SOffset { get; }
 
         public string Text => this.ToString();
 
@@ -45,6 +66,26 @@ namespace InfluxDB.InfluxQL.Syntax.Statements
             if (GroupBy != null)
             {
                 statement.Append(" ").Append(GroupBy);
+            }
+
+            if (Limit != null)
+            {
+                statement.Append(" ").Append(Limit);
+            }
+
+            if (Offset != null)
+            {
+                statement.Append(" ").Append(Offset);
+            }
+
+            if (SLimit != null)
+            {
+                statement.Append(" ").Append(SLimit);
+            }
+
+            if (SOffset != null)
+            {
+                statement.Append(" ").Append(SOffset);
             }
 
             return statement.ToString();

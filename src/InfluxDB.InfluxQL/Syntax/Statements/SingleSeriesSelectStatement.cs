@@ -8,12 +8,21 @@ namespace InfluxDB.InfluxQL.Syntax.Statements
 {
     public class SingleSeriesSelectStatement<TValues>
     {
-        public SingleSeriesSelectStatement(SelectClause select, FromClause from, WhereClause where = null, GroupByClause groupBy = null)
+        public SingleSeriesSelectStatement(
+            SelectClause select,
+            FromClause from,
+            WhereClause where = null,
+            GroupByClause groupBy = null,
+            LimitClause limit = null,
+            OffsetClause offset = null
+        )
         {
             Select = select ?? throw new ArgumentNullException(nameof(select));
             From = from ?? throw new ArgumentNullException(nameof(from));
             Where = where;
             GroupBy = groupBy;
+            Limit = limit;
+            Offset = offset;
         }
 
         public SelectClause Select { get; }
@@ -23,6 +32,10 @@ namespace InfluxDB.InfluxQL.Syntax.Statements
         public WhereClause Where { get; }
 
         public GroupByClause GroupBy { get; }
+
+        public LimitClause Limit { get; }
+
+        public OffsetClause Offset { get; }
 
         public string Text => this.ToString();
 
@@ -42,6 +55,16 @@ namespace InfluxDB.InfluxQL.Syntax.Statements
             if (GroupBy != null)
             {
                 statement.Append(" ").Append(GroupBy);
+            }
+
+            if (Limit != null)
+            {
+                statement.Append(" ").Append(Limit);
+            }
+
+            if (Offset != null)
+            {
+                statement.Append(" ").Append(Offset);
             }
 
             return statement.ToString();

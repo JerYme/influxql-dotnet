@@ -150,6 +150,16 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
             return new GroupBy<TValues, TGroupBy>(measurement, select, from, tagSelection, timeInterval: timeInterval);
         }
 
+        public Limit<TValues> Limit(int n)
+        {
+            return new Limit<TValues>(Statement, n);
+        }
+
+        public Offset<TValues> Offset(int n)
+        {
+            return new Offset<TValues>(Statement, n);
+        }
+
         public override string ToString()
         {
             return Statement.Text;

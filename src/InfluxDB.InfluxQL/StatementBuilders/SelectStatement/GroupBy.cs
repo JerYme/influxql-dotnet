@@ -26,6 +26,16 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
 
         public SingleSeriesSelectStatement<TValues> Statement => new SingleSeriesSelectStatement<TValues>(select, from, where, groupBy);
 
+        public Limit<TValues> Limit(int n)
+        {
+            return new Limit<TValues>(Statement, n);
+        }
+
+        public Offset<TValues> Offset(int n)
+        {
+            return new Offset<TValues>(Statement, n);
+        }
+
         public override string ToString()
         {
             return Statement.Text;
@@ -59,6 +69,26 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
         }
 
         public MultiSeriesSelectStatement<TValues, TGroupBy> Statement => new MultiSeriesSelectStatement<TValues, TGroupBy>(select, from, where, groupBy);
+
+        public Limit<TValues, TGroupBy> Limit(int n)
+        {
+            return new Limit<TValues, TGroupBy>(Statement, n);
+        }
+
+        public Offset<TValues, TGroupBy> Offset(int n)
+        {
+            return new Offset<TValues, TGroupBy>(Statement, n);
+        }
+
+        public SLimit<TValues, TGroupBy> SLimit(int n)
+        {
+            return new SLimit<TValues, TGroupBy>(Statement, n);
+        }
+
+        public SOffset<TValues, TGroupBy> SOffset(int n)
+        {
+            return new SOffset<TValues, TGroupBy>(Statement, n);
+        }
 
         public override string ToString()
         {
