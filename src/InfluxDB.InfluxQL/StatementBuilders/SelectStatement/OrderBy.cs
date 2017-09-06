@@ -3,21 +3,19 @@ using InfluxDB.InfluxQL.Syntax.Statements;
 
 namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
 {
-    public class Limit<TValues>
+    public class OrderBy<TValues>
     {
-        internal Limit(SingleSeriesSelectStatement<TValues> statement, int n)
+        internal OrderBy(SingleSeriesSelectStatement<TValues> statement)
         {
-            Statement = new SingleSeriesSelectStatement<TValues>(
-                statement.Select,
-                statement.From,
-                statement.Where,
-                statement.GroupBy,
-                statement.OrderBy,
-                new LimitClause(n)
-            );
+            Statement = new SingleSeriesSelectStatement<TValues>(statement.Select, statement.From, statement.Where, statement.GroupBy, new OrderByClause());
         }
 
         public SingleSeriesSelectStatement<TValues> Statement { get; }
+
+        public Limit<TValues> Limit(int n)
+        {
+            return new Limit<TValues>(Statement, n);
+        }
 
         public Offset<TValues> Offset(int n)
         {
@@ -29,27 +27,25 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
             return Statement.Text;
         }
 
-        public static implicit operator SingleSeriesSelectStatement<TValues>(Limit<TValues> builder)
+        public static implicit operator SingleSeriesSelectStatement<TValues>(OrderBy<TValues> builder)
         {
             return builder.Statement;
         }
     }
 
-    public class Limit<TValues, TGroupBy>
+    public class OrderBy<TValues, TGroupBy>
     {
-        internal Limit(MultiSeriesSelectStatement<TValues, TGroupBy> statement, int n)
+        internal OrderBy(MultiSeriesSelectStatement<TValues, TGroupBy> statement)
         {
-            Statement = new MultiSeriesSelectStatement<TValues, TGroupBy>(
-                statement.Select,
-                statement.From,
-                statement.Where,
-                statement.GroupBy,
-                statement.OrderBy,
-                new LimitClause(n)
-            );
+            Statement = new MultiSeriesSelectStatement<TValues, TGroupBy>(statement.Select, statement.From, statement.Where, statement.GroupBy, new OrderByClause());
         }
 
         public MultiSeriesSelectStatement<TValues, TGroupBy> Statement { get; }
+
+        public Limit<TValues, TGroupBy> Limit(int n)
+        {
+            return new Limit<TValues, TGroupBy>(Statement, n);
+        }
 
         public Offset<TValues, TGroupBy> Offset(int n)
         {
@@ -71,7 +67,7 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
             return Statement.Text;
         }
 
-        public static implicit operator MultiSeriesSelectStatement<TValues, TGroupBy>(Limit<TValues, TGroupBy> builder)
+        public static implicit operator MultiSeriesSelectStatement<TValues, TGroupBy>(OrderBy<TValues, TGroupBy> builder)
         {
             return builder.Statement;
         }

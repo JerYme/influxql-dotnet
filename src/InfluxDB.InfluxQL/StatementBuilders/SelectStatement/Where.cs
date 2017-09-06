@@ -26,6 +26,11 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
             return new GroupBy<TValues>(select, from, timeInterval, where);
         }
 
+        public OrderBy<TValues> OrderByTimeDesc()
+        {
+            return new OrderBy<TValues>(Statement);
+        }
+
         public Limit<TValues> Limit(int n)
         {
             return new Limit<TValues>(Statement, n);
@@ -77,6 +82,11 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
         public GroupBy<TValues, TGroupBy> GroupBy<TGroupBy>(TimeSpan timeInterval, Expression<Func<TTags, TGroupBy>> tagSelection)
         {
             return new GroupBy<TValues, TGroupBy>(measurement, select, from, tagSelection, where, timeInterval);
+        }
+
+        public OrderBy<TValues> OrderByTimeDesc()
+        {
+            return new OrderBy<TValues>(Statement);
         }
 
         public Limit<TValues> Limit(int n)

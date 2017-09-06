@@ -26,6 +26,11 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
 
         public SingleSeriesSelectStatement<TValues> Statement => new SingleSeriesSelectStatement<TValues>(select, from, where, groupBy);
 
+        public OrderBy<TValues> OrderByTimeDesc()
+        {
+            return new OrderBy<TValues>(Statement);
+        }
+
         public Limit<TValues> Limit(int n)
         {
             return new Limit<TValues>(Statement, n);
@@ -69,6 +74,11 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
         }
 
         public MultiSeriesSelectStatement<TValues, TGroupBy> Statement => new MultiSeriesSelectStatement<TValues, TGroupBy>(select, from, where, groupBy);
+
+        public OrderBy<TValues, TGroupBy> OrderByTimeDesc()
+        {
+            return new OrderBy<TValues, TGroupBy>(Statement);
+        }
 
         public Limit<TValues, TGroupBy> Limit(int n)
         {

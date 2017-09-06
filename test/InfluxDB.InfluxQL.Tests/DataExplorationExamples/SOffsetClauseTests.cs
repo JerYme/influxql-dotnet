@@ -18,13 +18,14 @@ namespace InfluxDB.InfluxQL.Tests.DataExplorationExamples
             query.Statement.Text.ShouldBe("SELECT water_level FROM h2o_feet GROUP BY location SLIMIT 1 SOFFSET 1");
         }
 
-        [Fact(Skip = "ORDER BY not implemented")]
+        [Fact]
         public void Paginate_series_and_include_several_clauses()
         {
             var query = InfluxQuery.From(h2o_feet)
                 .Select(f => new { mean = Aggregations.MEAN(f.water_level) })
                 .Where("time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:42:00Z'")
                 .GroupBy(TimeSpan.FromMinutes(12), t => t)
+                .OrderByTimeDesc()
                 .Limit(2)
                 .Offset(2)
                 .SLimit(1)

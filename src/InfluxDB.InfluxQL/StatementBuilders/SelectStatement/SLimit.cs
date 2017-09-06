@@ -7,7 +7,16 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
     {
         internal SLimit(MultiSeriesSelectStatement<TValues, TGroupBy> statement, int n)
         {
-            Statement = new MultiSeriesSelectStatement<TValues, TGroupBy>(statement.Select, statement.From, statement.Where, statement.GroupBy, statement.Limit, statement.Offset, new SLimitClause(n));
+            Statement = new MultiSeriesSelectStatement<TValues, TGroupBy>(
+                statement.Select,
+                statement.From,
+                statement.Where,
+                statement.GroupBy,
+                statement.OrderBy,
+                statement.Limit,
+                statement.Offset,
+                new SLimitClause(n)
+            );
         }
 
         public MultiSeriesSelectStatement<TValues, TGroupBy> Statement { get; }
