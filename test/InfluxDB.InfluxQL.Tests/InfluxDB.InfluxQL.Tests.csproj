@@ -10,11 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Interactions\*.approved.json" />
-    <EmbeddedResource Include="Interactions\*.approved.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="ApprovalTests" Version="3.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.1.2" />
     <PackageReference Include="Shouldly" Version="2.8.3" />
