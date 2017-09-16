@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Benchmarks;
 using InfluxDB.InfluxQL.Client;
+using InfluxDB.InfluxQL.Syntax.Statements;
 using InfluxDB.InfluxQL.Tests.DataExplorationExamples.NoaaSampleData;
 using Newtonsoft.Json;
 
@@ -37,17 +39,33 @@ namespace InfluxDB.InfluxQL
 
             var query = InfluxQuery.From(h2o_feet).Select(x => new { x.water_level });
 
+            var results = await GetPoints(endpoint, database, query.Statement);
+
+            double total = 0;
+            foreach (var (time, values) in results)
+            {
+                total += values.water_level;
+            }
+
+            return total;
+        }
+
+        private async Task<IEnumerable<(DateTime time, TValues values)>> GetPoints<TValues>(string endpoint, string database, SingleSeriesSelectStatement<TValues> query)
+        {
             var httpClient = new HttpClient { BaseAddress = new Uri(endpoint) };
 
-            var response = await httpClient.GetAsync($"query?db={Uri.EscapeDataString(database)}&q={Uri.EscapeDataString(query.Statement.Text)}");
+            var response = await httpClient.GetAsync($"query?db={Uri.EscapeDataString(database)}&q={Uri.EscapeDataString(query.Text)}");
             response.EnsureSuccessStatusCode();
 
             var resposeStream = await response.Content.ReadAsStreamAsync();
             var reader = new StreamReader(resposeStream);
             var jsonReader = new Newtonsoft.Json.JsonTextReader(reader);
 
-            double total = 0;
+            return GetPoints<TValues>(jsonReader);
+        }
 
+        private IEnumerable<(DateTime time, TValues values)> GetPoints<TValues>(JsonTextReader jsonReader)
+        {
             jsonReader.Read();
 
             if (jsonReader.TokenType != JsonToken.StartObject)
@@ -140,9 +158,13 @@ namespace InfluxDB.InfluxQL
 
             while (jsonReader.Read() && jsonReader.TokenType == JsonToken.StartArray)
             {
-                jsonReader.ReadAsDateTime();
+                var time = jsonReader.ReadAsDateTime().Value;
 
-                total += jsonReader.ReadAsDouble().Value;
+                var foo = jsonReader.ReadAsDouble().Value;
+
+                var values = (TValues)Activator.CreateInstance(typeof(TValues), foo);
+
+                yield return (time, values);
 
                 jsonReader.Read();
 
@@ -152,7 +174,7 @@ namespace InfluxDB.InfluxQL
                 }
             }
 
-            return total;
         }
+
     }
 }
