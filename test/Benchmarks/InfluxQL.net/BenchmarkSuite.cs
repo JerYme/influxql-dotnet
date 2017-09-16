@@ -59,7 +59,7 @@ namespace InfluxDB.InfluxQL
 
             var resposeStream = await response.Content.ReadAsStreamAsync();
             var reader = new StreamReader(resposeStream);
-            var jsonReader = new Newtonsoft.Json.JsonTextReader(reader);
+            var jsonReader = new JsonTextReader(reader);
 
             return GetPoints<TValues>(jsonReader);
         }
@@ -173,8 +173,136 @@ namespace InfluxDB.InfluxQL
                     throw new Exception();
                 }
             }
-
         }
 
+        public async Task<double> SumTheWaterLevelAltNoActivator(string endpoint, string database)
+        {
+            var h2o_feet = new WaterDepth();
+
+            var query = InfluxQuery.From(h2o_feet).Select(x => new { x.water_level });
+
+            var httpClient = new HttpClient { BaseAddress = new Uri(endpoint) };
+
+            var response = await httpClient.GetAsync($"query?db={Uri.EscapeDataString(database)}&q={Uri.EscapeDataString(query.Statement.Text)}");
+            response.EnsureSuccessStatusCode();
+
+            var resposeStream = await response.Content.ReadAsStreamAsync();
+            var reader = new StreamReader(resposeStream);
+            var jsonReader = new JsonTextReader(reader);
+
+            double total = 0;
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.StartObject)
+            {
+                throw new Exception();
+            }
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.PropertyName && "results".Equals(jsonReader.Value))
+            {
+                throw new Exception();
+            }
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.StartArray)
+            {
+                throw new Exception();
+            }
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.StartObject)
+            {
+                throw new Exception();
+            }
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.PropertyName && "statement_id".Equals(jsonReader.Value))
+            {
+                throw new Exception();
+            }
+
+            jsonReader.Skip();
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.PropertyName && "statement_id".Equals(jsonReader.Value))
+            {
+                throw new Exception();
+            }
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.StartArray)
+            {
+                throw new Exception();
+            }
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.StartObject)
+            {
+                throw new Exception();
+            }
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.PropertyName && "name".Equals(jsonReader.Value))
+            {
+                throw new Exception();
+            }
+
+            jsonReader.Skip();
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.PropertyName && "columns".Equals(jsonReader.Value))
+            {
+                throw new Exception();
+            }
+
+            jsonReader.Skip();
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.PropertyName && "values".Equals(jsonReader.Value))
+            {
+                throw new Exception();
+            }
+
+            jsonReader.Read();
+
+            if (jsonReader.TokenType != JsonToken.StartArray)
+            {
+                throw new Exception();
+            }
+
+            while (jsonReader.Read() && jsonReader.TokenType == JsonToken.StartArray)
+            {
+                var time = jsonReader.ReadAsDateTime().Value;
+
+                var foo = jsonReader.ReadAsDouble().Value;
+
+                var values = new {water_level = foo};
+
+               var point = (time, values);
+
+                total += point.Item2.water_level;
+
+                jsonReader.Read();
+
+                if (jsonReader.TokenType != JsonToken.EndArray)
+                {
+                    throw new Exception();
+                }
+            }
+
+            return  total;
+        }
     }
 }
