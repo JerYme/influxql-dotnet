@@ -6,24 +6,22 @@ By building up [InfluxQL](https://docs.influxdata.com/influxdb/v1.3/query_langua
 
 ## Building InfluxQL statements using fluent syntax.
 ```csharp
+// SELECT \"level description\" AS level_description, water_level FROM h2o_feet
 var query = InfluxQuery.From(h2o_feet).Select(fields => fields);
-
-// Note escaping and alias for field "level description"
-query.Statement.Text.ShouldBe("SELECT \"level description\" AS level_description, water_level FROM h2o_feet");
 ```
+Note escaping and alias for field "level description".
 
 We can do `SELECT` projection to just return the water_level.
 
 ```csharp
+// SELECT water_level FROM h2o_feet
 var waterLevelQuery = InfluxQuery.From(h2o_feet).Select(fields => new { fields.water_level });
-
-waterLevelQuery.Statement.Text.ShouldBe("SELECT water_level FROM h2o_feet");
 ```
 
 Retrive the results from Influx.
 
 ```csharp
-var client = new InfluxQLClient(config.Endpoint, "NOAA_water_database");
+var client = new InfluxQLClient(new Uri("http:/localhost:8086"), "NOAA_water_database");
 
 var results = await client.Query(waterLevelQuery.Statement);
 
@@ -34,7 +32,7 @@ foreach (var (time, values) in results)
 ```
 Note the strong typing for returning a single series of points based on query statement passed in to `Query` method.
 
- The type retuned in the results from issuing this query is an instance of the anonymous type we define in the select statement meaning tring to reference level_description in the results will cause an complie error.
+The type retuned in the results from issuing this query is an instance of the anonymous type we define in the select statement meaning tring to reference level_description in the results will cause an complie error.
 
 
 Doing a `GROUP BY` will retun multiple series:
@@ -42,12 +40,10 @@ Doing a `GROUP BY` will retun multiple series:
 ```csharp
 using static InfluxDB.InfluxQL.Aggregations;
 ...
-
+// SELECT MEAN(water_level) AS mean FROM h2o_feet GROUP BY location
 var query = InfluxQuery.From(h2o_feet)
 	.Select(fields => new { mean = MEAN(fields.water_level) })
 	.GroupBy(tags => new { tags.location });
-
-query.Statement.Text.ShouldBe("SELECT MEAN(water_level) AS mean FROM h2o_feet GROUP BY location");
 
 var results = await client.Query(query.Statement);
 
