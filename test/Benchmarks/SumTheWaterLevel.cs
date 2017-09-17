@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 
@@ -8,6 +9,21 @@ namespace Benchmarks
     {
         private readonly string endpoint = "http://localhost:8086";
         private readonly string database = "NOAA_water_database";
+
+        [Benchmark(Description = "Calling Influx no parsing of results")]
+        public async Task<double> JustMakeTheCall()
+        {
+            var query = "SELECT water_level FROM h2o_feet";
+
+            var httpClient = new HttpClient { BaseAddress = new Uri(endpoint) };
+
+            var response = await httpClient.GetAsync($"query?db={Uri.EscapeDataString(database)}&q={Uri.EscapeDataString(query)}&epoch=ns");
+            response.EnsureSuccessStatusCode();
+
+            await response.Content.ReadAsByteArrayAsync();
+
+            return 0;
+        }
 
         [Benchmark(Description = "InfluxQL.net by gambrose")]
         public Task<double> by_gambrose()

@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\InfluxDB.InfluxQL\InfluxDB.InfluxQL.csproj" />
-    <ProjectReference Include="..\InfluxDB.InfluxQL.Tests\InfluxDB.InfluxQL.Tests.csproj" />
   </ItemGroup>
 
 </Project>

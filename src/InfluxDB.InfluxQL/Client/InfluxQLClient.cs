@@ -12,6 +12,8 @@ namespace InfluxDB.InfluxQL.Client
 {
     public class InfluxQLClient
     {
+        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
         private readonly HttpClient httpClient;
         private readonly string database;
 
@@ -44,7 +46,7 @@ namespace InfluxDB.InfluxQL.Client
 
         private async Task<QueryResponse> Query(string query, CancellationToken cancellationToken)
         {
-            var endpoint = $"query?db={Uri.EscapeDataString(database)}&q={Uri.EscapeDataString(query)}";
+            var endpoint = $"query?db={Uri.EscapeDataString(database)}&q={Uri.EscapeDataString(query)}&epoch=ns";
 
             var response = await httpClient.GetAsync(endpoint, cancellationToken).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
@@ -56,11 +58,13 @@ namespace InfluxDB.InfluxQL.Client
 
         private IEnumerable<(DateTime time, TValues values)> GetPoints<TValues>(QueryResponse.Serie serie)
         {
+            const long NanosecondsPerTick = 100;
+
             // TODO: validate the order of parameters is correct.
 
             return serie.Values.Select(columnValues =>
             {
-                var time = (DateTime)columnValues[0];
+                var time = UnixEpoch.AddTicks((long)columnValues[0] / NanosecondsPerTick);
                 var values = (TValues)Activator.CreateInstance(typeof(TValues), columnValues.Skip(1).ToArray());
 
                 return (time, values);

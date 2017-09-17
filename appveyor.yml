@@ -29,6 +29,10 @@ before_test:
       NOAA_data.txt
 
       cmd /c --% influx -import -path=NOAA_data.txt -precision=s 2>&1
+after_test:
+  - ps: . "$env:APPVEYOR_BUILD_FOLDER\test\Benchmarks\bin\Release\net462\Benchmarks.exe"
+artifacts:
+  - path: BenchmarkDotNet.Artifacts\results\*.md
 deploy:
   - provider: NuGet
     api_key:
