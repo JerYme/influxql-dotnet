@@ -11,7 +11,7 @@ namespace InfluxDB.InfluxQL.Client
             {
                 foreach (var point in serie.Points)
                 {
-                    yield return (point.time, point.values, serie.Tags);
+                    yield return (point.Time, point.Values, serie.Tags);
                 }
             }
         }

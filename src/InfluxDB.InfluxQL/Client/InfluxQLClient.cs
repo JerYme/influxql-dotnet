@@ -23,7 +23,7 @@ namespace InfluxDB.InfluxQL.Client
             this.database = database;
         }
 
-        public async Task<IList<(DateTime time, TValues values)>> Query<TValues>(SingleSeriesSelectStatement<TValues> query, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IList<Point<TValues>>> Query<TValues>(SingleSeriesSelectStatement<TValues> query, CancellationToken cancellationToken = default(CancellationToken))
         {
             var queryResponse = await Query(query.Text, cancellationToken);
 
@@ -56,7 +56,7 @@ namespace InfluxDB.InfluxQL.Client
             return JsonConvert.DeserializeObject<QueryResponse>(json);
         }
 
-        private IEnumerable<(DateTime time, TValues values)> GetPoints<TValues>(QueryResponse.Serie serie)
+        private IEnumerable<Point<TValues>> GetPoints<TValues>(QueryResponse.Serie serie)
         {
             const long NanosecondsPerTick = 100;
 
@@ -67,7 +67,7 @@ namespace InfluxDB.InfluxQL.Client
                 var time = UnixEpoch.AddTicks((long)columnValues[0] / NanosecondsPerTick);
                 var values = (TValues)Activator.CreateInstance(typeof(TValues), columnValues.Skip(1).ToArray());
 
-                return (time, values);
+                return new Point<TValues>(time, values);
             });
         }
     }

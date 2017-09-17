@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace InfluxDB.InfluxQL.Client
 {
     public class Series<TValues, TGroupBy>
     {
-        public Series( IList<(DateTime time, TValues values)> points, TGroupBy tags)
+        public Series( IList<Point<TValues>> points, TGroupBy tags)
         {
             Tags = tags;
             Points = points;
@@ -13,6 +12,6 @@ namespace InfluxDB.InfluxQL.Client
 
         public TGroupBy Tags { get; }
 
-        public IList<(DateTime time, TValues values)> Points { get; }
+        public IList<Point<TValues>> Points { get; }
     }
 }

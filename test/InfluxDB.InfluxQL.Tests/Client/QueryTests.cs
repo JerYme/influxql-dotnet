@@ -31,19 +31,19 @@ namespace InfluxDB.InfluxQL.Tests.Client
 
             var expectedFirstTwoPoints = new[]
             {
-                    (new DateTime(2015, 8, 18, 0, 0, 0, DateTimeKind.Utc), new {water_level = 2.064} ),
-                    (new DateTime(2015, 8, 18, 0, 6, 0, DateTimeKind.Utc), new {water_level = 2.116} )
-                };
+                ( new DateTime(2015, 8, 18, 0, 0, 0, DateTimeKind.Utc), new {water_level = 2.064} ),
+                ( new DateTime(2015, 8, 18, 0, 6, 0, DateTimeKind.Utc), new {water_level = 2.116} )
+            };
 
-            results.Take(2).ToArray().ShouldBe(expectedFirstTwoPoints);
+            results.Take(2).Select(x => (x.Time, x.Values)).ToArray().ShouldBe(expectedFirstTwoPoints);
 
             var expectedLastTwoPoints = new[]
             {
-                    (new DateTime(2015, 9, 18, 21, 36, 0, DateTimeKind.Utc), new {water_level = 5.066} ),
-                    ( new DateTime(2015, 9, 18, 21, 42, 0, DateTimeKind.Utc), new {water_level = 4.938} )
-                };
+                ( new DateTime(2015, 9, 18, 21, 36, 0, DateTimeKind.Utc), new {water_level = 5.066} ),
+                ( new DateTime(2015, 9, 18, 21, 42, 0, DateTimeKind.Utc), new {water_level = 4.938} )
+            };
 
-            results.Reverse().Take(2).Reverse().ToArray().ShouldBe(expectedLastTwoPoints);
+            results.Reverse().Select(x => (x.Time, x.Values)).Take(2).Reverse().ToArray().ShouldBe(expectedLastTwoPoints);
         }
 
         [Fact]
