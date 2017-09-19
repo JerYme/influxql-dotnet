@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace InfluxDB.InfluxQL.Client.Responses
 {
-    internal class QueryResponse
+    internal class QueryResponse<TValues>
     {
         public IEnumerable<SeriesResult> Results { get; set; }
 
@@ -19,7 +20,8 @@ namespace InfluxDB.InfluxQL.Client.Responses
 
             public IList<string> Columns { get; set; }
 
-            public IList<IList<object>> Values { get; set; }
+            [JsonConverter(typeof(PointJsonConverter))]
+            public IList<Point<TValues>> Values { get; set; }
         }
     }
 }
