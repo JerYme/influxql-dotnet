@@ -3,11 +3,11 @@ using InfluxDB.InfluxQL.Syntax.Statements;
 
 namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
 {
-    public class OrderBy<TValues>
+    public class Fill<TValues>
     {
-        internal OrderBy(SingleSeriesSelectStatement<TValues> statement)
+        internal Fill(SingleSeriesSelectStatement<TValues> statement, FillType type)
         {
-            Statement = new SingleSeriesSelectStatement<TValues>(statement.Select, statement.From, statement.Where, statement.GroupBy, statement.Fill, new OrderByClause());
+            Statement = new SingleSeriesSelectStatement<TValues>(statement.Select, statement.From, statement.Where, statement.GroupBy, new FillClause(type));
         }
 
         public SingleSeriesSelectStatement<TValues> Statement { get; }
@@ -18,14 +18,14 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
 
         public override string ToString() => Statement.Text;
 
-        public static implicit operator SingleSeriesSelectStatement<TValues>(OrderBy<TValues> builder) => builder.Statement;
+        public static implicit operator SingleSeriesSelectStatement<TValues>(Fill<TValues> builder) => builder.Statement;
     }
 
-    public class OrderBy<TValues, TGroupBy>
+    public class Fill<TValues, TGroupBy>
     {
-        internal OrderBy(MultiSeriesSelectStatement<TValues, TGroupBy> statement)
+        internal Fill(MultiSeriesSelectStatement<TValues, TGroupBy> statement, FillType type)
         {
-            Statement = new MultiSeriesSelectStatement<TValues, TGroupBy>(statement.Select, statement.From, statement.Where, statement.GroupBy, statement.Fill, new OrderByClause());
+            Statement = new MultiSeriesSelectStatement<TValues, TGroupBy>(statement.Select, statement.From, statement.Where, statement.GroupBy, new FillClause(type));
         }
 
         public MultiSeriesSelectStatement<TValues, TGroupBy> Statement { get; }
@@ -40,6 +40,7 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
 
         public override string ToString() => Statement.Text;
 
-        public static implicit operator MultiSeriesSelectStatement<TValues, TGroupBy>(OrderBy<TValues, TGroupBy> builder) => builder.Statement;
+        public static implicit operator MultiSeriesSelectStatement<TValues, TGroupBy>(Fill<TValues, TGroupBy> builder) => builder.Statement;
     }
+
 }

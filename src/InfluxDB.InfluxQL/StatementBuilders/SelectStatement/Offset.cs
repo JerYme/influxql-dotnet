@@ -7,7 +7,7 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
     {
         internal Offset(SingleSeriesSelectStatement<TValues> statement, int n)
         {
-            Statement = new SingleSeriesSelectStatement<TValues>(statement.Select, statement.From, statement.Where, statement.GroupBy, statement.OrderBy, statement.Limit, new OffsetClause(n));
+            Statement = new SingleSeriesSelectStatement<TValues>(statement.Select, statement.From, statement.Where, statement.GroupBy,statement.Fill, statement.OrderBy, statement.Limit, new OffsetClause(n));
         }
 
         public SingleSeriesSelectStatement<TValues> Statement { get; }
@@ -27,7 +27,7 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
     {
         internal Offset(MultiSeriesSelectStatement<TValues, TGroupBy> statement, int n)
         {
-            Statement = new MultiSeriesSelectStatement<TValues, TGroupBy>(statement.Select, statement.From, statement.Where, statement.GroupBy, statement.OrderBy, statement.Limit, new OffsetClause(n));
+            Statement = new MultiSeriesSelectStatement<TValues, TGroupBy>(statement.Select, statement.From, statement.Where, statement.GroupBy,statement.Fill, statement.OrderBy, statement.Limit, new OffsetClause(n));
         }
 
         public MultiSeriesSelectStatement<TValues, TGroupBy> Statement { get; }

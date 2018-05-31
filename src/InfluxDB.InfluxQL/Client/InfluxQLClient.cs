@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 
 namespace InfluxDB.InfluxQL.Client
 {
+
     public class InfluxQLClient
     {
         private readonly HttpClient httpClient;

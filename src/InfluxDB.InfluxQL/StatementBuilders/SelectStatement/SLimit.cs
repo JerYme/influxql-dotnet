@@ -12,6 +12,7 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
                 statement.From,
                 statement.Where,
                 statement.GroupBy,
+                statement.Fill,
                 statement.OrderBy,
                 statement.Limit,
                 statement.Offset,

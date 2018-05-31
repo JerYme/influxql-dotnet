@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>A .NET library for querying InfluxDB in a type safe way</Description>
-    <TargetFrameworks>net452;netstandard1.5</TargetFrameworks>
+    <TargetFrameworks>net45</TargetFrameworks> <!--net45;netstandard1.5;netstandard2.0-->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AssemblyName>InfluxDB.InfluxQL</AssemblyName>
     <PackageId>InfluxQL.net</PackageId>
@@ -10,13 +10,34 @@
     <PackageTags>influxdb</PackageTags>
     <PackageProjectUrl>https://github.com/gambrose/influxql-dotnet</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/gambrose/influxql-dotnet/master/LICENSE</PackageLicenseUrl>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.Collections.Immutable" Version="1.4.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net45' ">
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.4.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.0" />
+    <PackageReference Include="System.Linq" Version="4.3.0" />
+    <PackageReference Include="System.Threading" Version="4.3.0" />
+    <PackageReference Include="System.Runtime" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+    <PackageReference Include="System.Reflection" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="NETStandard.Library" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

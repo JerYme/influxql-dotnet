@@ -26,30 +26,17 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
 
         public SingleSeriesSelectStatement<TValues> Statement => new SingleSeriesSelectStatement<TValues>(select, from, where, groupBy);
 
-        public OrderBy<TValues> OrderByTimeDesc()
-        {
-            return new OrderBy<TValues>(Statement);
-        }
+        public Fill<TValues> Fill(FillType type) => new Fill<TValues>(Statement, type);
 
-        public Limit<TValues> Limit(int n)
-        {
-            return new Limit<TValues>(Statement, n);
-        }
+        public OrderBy<TValues> OrderByTimeDesc() => new OrderBy<TValues>(Statement);
 
-        public Offset<TValues> Offset(int n)
-        {
-            return new Offset<TValues>(Statement, n);
-        }
+        public Limit<TValues> Limit(int n) => new Limit<TValues>(Statement, n);
 
-        public override string ToString()
-        {
-            return Statement.Text;
-        }
+        public Offset<TValues> Offset(int n) => new Offset<TValues>(Statement, n);
 
-        public static implicit operator SingleSeriesSelectStatement<TValues>(GroupBy<TValues> builder)
-        {
-            return builder.Statement;
-        }
+        public override string ToString() => Statement.Text;
+
+        public static implicit operator SingleSeriesSelectStatement<TValues>(GroupBy<TValues> builder) => builder.Statement;
     }
 
     public class GroupBy<TValues, TGroupBy>
@@ -75,40 +62,21 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
 
         public MultiSeriesSelectStatement<TValues, TGroupBy> Statement => new MultiSeriesSelectStatement<TValues, TGroupBy>(select, from, where, groupBy);
 
-        public OrderBy<TValues, TGroupBy> OrderByTimeDesc()
-        {
-            return new OrderBy<TValues, TGroupBy>(Statement);
-        }
+        public OrderBy<TValues, TGroupBy> OrderByTimeDesc() => new OrderBy<TValues, TGroupBy>(Statement);
 
-        public Limit<TValues, TGroupBy> Limit(int n)
-        {
-            return new Limit<TValues, TGroupBy>(Statement, n);
-        }
+        public Fill<TValues, TGroupBy> Fill(FillType type) => new Fill<TValues, TGroupBy>(Statement, type);
 
-        public Offset<TValues, TGroupBy> Offset(int n)
-        {
-            return new Offset<TValues, TGroupBy>(Statement, n);
-        }
+        public Limit<TValues, TGroupBy> Limit(int n) => new Limit<TValues, TGroupBy>(Statement, n);
 
-        public SLimit<TValues, TGroupBy> SLimit(int n)
-        {
-            return new SLimit<TValues, TGroupBy>(Statement, n);
-        }
+        public Offset<TValues, TGroupBy> Offset(int n) => new Offset<TValues, TGroupBy>(Statement, n);
 
-        public SOffset<TValues, TGroupBy> SOffset(int n)
-        {
-            return new SOffset<TValues, TGroupBy>(Statement, n);
-        }
+        public SLimit<TValues, TGroupBy> SLimit(int n) => new SLimit<TValues, TGroupBy>(Statement, n);
 
-        public override string ToString()
-        {
-            return Statement.Text;
-        }
+        public SOffset<TValues, TGroupBy> SOffset(int n) => new SOffset<TValues, TGroupBy>(Statement, n);
 
-        public static implicit operator MultiSeriesSelectStatement<TValues, TGroupBy>(GroupBy<TValues, TGroupBy> builder)
-        {
-            return builder.Statement;
-        }
+        public override string ToString() => Statement.Text;
+
+        public static implicit operator MultiSeriesSelectStatement<TValues, TGroupBy>(GroupBy<TValues, TGroupBy> builder) => builder.Statement;
 
         private IEnumerable<MeasurementTag> ParseExpression(LambdaExpression selectExpression)
         {

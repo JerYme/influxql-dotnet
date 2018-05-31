@@ -12,6 +12,7 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
                 statement.From,
                 statement.Where,
                 statement.GroupBy,
+                statement.Fill,
                 statement.OrderBy,
                 new LimitClause(n)
             );
@@ -44,6 +45,7 @@ namespace InfluxDB.InfluxQL.StatementBuilders.SelectStatement
                 statement.From,
                 statement.Where,
                 statement.GroupBy,
+                statement.Fill,
                 statement.OrderBy,
                 new LimitClause(n)
             );

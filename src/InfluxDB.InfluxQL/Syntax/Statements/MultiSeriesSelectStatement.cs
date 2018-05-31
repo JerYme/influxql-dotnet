@@ -14,6 +14,7 @@ namespace InfluxDB.InfluxQL.Syntax.Statements
             FromClause from,
             WhereClause where = null,
             GroupByClause groupBy = null,
+            FillClause fill = null,
             OrderByClause orderBy = null,
             LimitClause limit = null,
             OffsetClause offset = null,
@@ -25,6 +26,7 @@ namespace InfluxDB.InfluxQL.Syntax.Statements
             From = from ?? throw new ArgumentNullException(nameof(from));
             Where = where;
             GroupBy = groupBy;
+            Fill = fill;
             OrderBy = orderBy;
             Limit = limit;
             Offset = offset;
@@ -39,6 +41,8 @@ namespace InfluxDB.InfluxQL.Syntax.Statements
         public WhereClause Where { get; }
 
         public GroupByClause GroupBy { get; }
+
+        public FillClause Fill { get; }
 
         public OrderByClause OrderBy { get; }
 
@@ -70,6 +74,11 @@ namespace InfluxDB.InfluxQL.Syntax.Statements
             if (GroupBy != null)
             {
                 statement.Append(" ").Append(GroupBy);
+            }
+
+            if (Fill != null)
+            {
+                statement.Append(" ").Append(Fill);
             }
 
             if (OrderBy != null)
